@@ -2308,25 +2308,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
         transition-duration: .01ms !important;
     }
 }
-/* Keep light sections light even when phone is in dark mode */
-:root {
+
+/* Keep light section backgrounds white */
+html,
+body {
     color-scheme: light;
 }
 
-html {
-    color-scheme: light;
-}
-
-section.section-light {
+section.section-light,
+section.section-light#about,
+section.section-light#projects,
+section.section-light#contact {
     background: #ffffff !important;
     background-color: #ffffff !important;
-    color: #252525;
+    background-image: none !important;
 }
 
-section.section-light .section-heading h2,
-section.section-light .about-text h3,
-section.section-light .project-body h3,
-section.section-light .contact-info h3 {
-    color: #252525;
-}
 
