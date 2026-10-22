@@ -2308,21 +2308,25 @@ button, a { -webkit-tap-highlight-color: transparent; }
         transition-duration: .01ms !important;
     }
 }
-
-/* Keep website colors unchanged in dark mode */
+/* Keep light sections light even when phone is in dark mode */
 :root {
     color-scheme: light;
 }
 
-.html {
-    background-color: #080808;
+html {
+    color-scheme: light;
 }
 
-.body {
-    background-color: #080808;
+section.section-light {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #252525;
 }
 
-/* Preserve light section backgrounds */
-.section-light {
-    background-color: #f7f7f7;
+section.section-light .section-heading h2,
+section.section-light .about-text h3,
+section.section-light .project-body h3,
+section.section-light .contact-info h3 {
+    color: #252525;
 }
+
