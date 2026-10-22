@@ -2308,3 +2308,17 @@ button, a { -webkit-tap-highlight-color: transparent; }
         transition-duration: .01ms !important;
     }
 }
+
+
+/* Keep website colors consistent in phone dark mode */
+:root {
+    color-scheme: light;
+}
+
+html {
+    color-scheme: light;
+}
+
+body {
+    background-color: #080808;
+}
