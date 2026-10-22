@@ -2309,16 +2309,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
     }
 }
 
-
-/* Keep website colors consistent in phone dark mode */
+/* Keep website colors unchanged in dark mode */
 :root {
     color-scheme: light;
 }
 
-html {
-    color-scheme: light;
+.html {
+    background-color: #080808;
 }
 
-body {
+.body {
     background-color: #080808;
+}
+
+/* Preserve light section backgrounds */
+.section-light {
+    background-color: #f7f7f7;
 }
