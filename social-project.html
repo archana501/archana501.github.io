@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nykaa Sales Analysis Dashboard — a Power BI project by Archana.">
+  <title>Social Media Marketing Analysis | Archana</title>
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --panel: #15151c;
+      --panel-2: #1b1b24;
+      --text: #f6f6f8;
+      --muted: #b6b6c2;
+      --red: #ef233c;
+      --red-dark: #b5162a;
+      --border: rgba(255,255,255,.11);
+      --shadow: 0 18px 55px rgba(0,0,0,.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: radial-gradient(circle at 80% 0%, rgba(239,35,60,.12), transparent 30%), var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11,11,15,.88);
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { text-decoration: none; font-size: 1.12rem; font-weight: 800; letter-spacing: .3px; }
+    .brand span { color: var(--red); }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .94rem; }
+    .nav-links a:hover { color: white; }
+    .hero { padding: 78px 0 48px; }
+    .eyebrow { color: #ff6a7b; text-transform: uppercase; letter-spacing: 2px; font-size: .78rem; font-weight: 800; }
+    h1 { font-size: clamp(2.25rem, 5vw, 4.1rem); line-height: 1.1; margin: 14px 0 18px; max-width: 850px; }
+    h1 span, .accent { color: var(--red); }
+    .lead { color: var(--muted); font-size: 1.08rem; max-width: 780px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 9px; text-decoration: none; font-weight: 750; border: 1px solid var(--border); transition: transform .2s, background .2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--red); color: white; border-color: var(--red); }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary { background: transparent; color: white; }
+    section { padding: 34px 0; }
+    .section-head { margin-bottom: 20px; }
+    h2 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2.1rem); }
+    .section-head p, .muted { color: var(--muted); margin: 0; }
+    .grid { display: grid; gap: 16px; }
+    .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card { background: linear-gradient(145deg, var(--panel-2), var(--panel)); border: 1px solid var(--border); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+    .kpi-label { color: var(--muted); font-size: .9rem; }
+    .kpi-value { font-size: clamp(1.65rem, 3vw, 2.15rem); font-weight: 850; margin-top: 7px; }
+    .kpi-note { color: #ff8290; font-size: .82rem; margin-top: 5px; }
+    .two-col { grid-template-columns: 1.1fr .9fr; }
+    .list { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
+    .list li { margin: 8px 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+    .tag { background: rgba(239,35,60,.1); color: #ff9aa5; border: 1px solid rgba(239,35,60,.28); border-radius: 999px; padding: 6px 11px; font-size: .85rem; }
+    .dashboards { grid-template-columns: 1fr; }
+    .dashboard-card { padding: 16px; overflow: hidden; }
+    .dashboard-card h3 { margin: 4px 4px 12px; }
+    .dashboard-card img { display: block; width: 100%; max-height: 650px; object-fit: contain; background: #101016; border: 1px solid var(--border); border-radius: 10px; }
+    .image-caption { color: var(--muted); font-size: .88rem; margin: 10px 4px 2px; }
+    .insights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .insight { display: flex; gap: 12px; align-items: flex-start; }
+    .bullet { flex: 0 0 10px; width: 10px; height: 10px; border-radius: 50%; background: var(--red); margin-top: 9px; }
+    .insight p { margin: 0; color: var(--muted); }
+    .insight strong { color: var(--text); }
+    .conclusion { border-left: 4px solid var(--red); }
+    footer { margin-top: 44px; border-top: 1px solid var(--border); padding: 28px 0 38px; color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    footer a { color: #ff8290; text-decoration: none; }
+    @media (max-width: 800px) {
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .two-col { grid-template-columns: 1fr; }
+      .nav { align-items: flex-start; padding: 16px 0; flex-direction: column; }
+      .nav-links { gap: 15px; flex-wrap: wrap; }
+    }
+    @media (max-width: 520px) {
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 52px; }
+      .kpis, .insights { grid-template-columns: 1fr; }
+      .card { padding: 18px; }
+      .nav-links { font-size: .88rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="">ARCHANA<span>.</span></a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#overview">Overview</a>
+        <a href="#dashboards">Dashboards</a>
+        <a href="#insights">Insights</a>
+        <a href="#contact">Connect</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="eyebrow">Power BI • Digital Marketing Analytics Project</div>
+      <h1>Social Media<span>Marketing Analysis</span> Dashboard</h1>
+      <p class="lead">An interactive Power BI dashboard analyzing social media campaign performance across platforms, regions, and content types, with a focus on revenue, clicks, engagement, conversions, and follower growth.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/archana501/Social-Media-Marketing-Analysis-Dashboard">VIEW ON GITHUB</a>
+        <a class="btn btn-secondary" href="newindex.html#projects">BACK TO PORTFOLIO</a>
+      </div>
+    </section>
+
+    <section class="container" aria-label="Key performance indicators">
+      <div class="grid kpis">
+                <article class="card"><div class="kpi-label">Total Revenue</div><div class="kpi-value">3.66M</div><div class="kpi-note">Campaign revenue generated</div></article>
+        <article class="card"><div class="kpi-label">Total Clicks</div><div class="kpi-value">738K</div><div class="kpi-note">Total campaign clicks</div></article>
+        <article class="card"><div class="kpi-label">Avg Engagement Rate</div><div class="kpi-value">11.67</div><div class="kpi-note">Average audience engagement</div></article>
+        <article class="card"><div class="kpi-label">Avg Conversion Rate</div><div class="kpi-value">20.33</div><div class="kpi-note">Average conversion performance</div></article>
+        <article class="card"><div class="kpi-label">Total Followers</div><div class="kpi-value">11M</div><div class="kpi-note">Total followers across platforms</div></article>
+      </div>
+    </section>
+
+    <section class="container" id="overview">
+      <div class="section-head"><h2>Project <span class="accent">Overview</span></h2><p>What this dashboard analyzes and how it supports decisions.</p></div>
+      <div class="grid two-col">
+        <article class="card">
+          <h3>About the project</h3>
+          <p class="muted">This project transforms marketing data into actionable insights through interactive KPIs and visualizations. It helps evaluate campaign effectiveness, compare social media platforms, understand content performance, and analyze regional and monthly trends.</p>
+          <h3>Project goals</h3>
+          <ul class="list">
+            <li>Monitor campaign revenue and clicks.</li>
+            <li>Compare platform engagement and conversion performance.</li>
+            <li>Analyze content type effectiveness.</li>
+            <li>Track follower growth and audience reach.</li>
+            <li>Evaluate regional and monthly campaign trends.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Tools & technologies</h3>
+          <p class="muted">Tools and concepts used in the project:</p>
+          <div class="tags">
+            <span class="tag">Power BI</span><span class="tag">Power Query</span><span class="tag">DAX</span>
+            <span class="tag">Microsoft Excel</span><span class="tag">Data Visualization</span>
+            <!-- <span class="tag">KPI Design</span><span class="tag">Business Intelligence</span>
+            <span class="tag">Business Storytelling</span> -->
+          </div>
+          <h3 style="margin-top:24px">Dashboard features</h3>
+          <ul class="list">
+            <li>Interactive KPI cards.</li>
+            <li>Platform-wise performance analysis.</li>
+            <li>Content type comparison.</li>
+            <li>Monthly campaign trend analysis.</li>
+            <li>Region-wise performance comparison.</li>
+            <li>Revenue and conversion analysis.</li>
+            <li>Interactive slicers and filters.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" id="dashboards">
+      <div class="section-head"><h2>Dashboard <span class="accent">Pages</span></h2></div>
+      <div class="grid dashboards">
+        <article class="card dashboard-card">
+          <h3>01 — Social Media Marketing Analysis</h3>
+          <img src="assets/social.png" alt="Social Media Marketing Analysis Dashboard Power BI" loading="lazy">
+          <p class="image-caption">The dashboard provides a consolidated overview of marketing campaign performance through revenue, clicks, engagement, conversion, and follower metrics. It compares platforms, content types, and regions while tracking monthly trends and follower growth.
+        </article>
+        <!-- <article class="card dashboard-card">
+          <h3>02 — Profit & Return Insights</h3>
+          <img src="assets/nykaa2.png" alt="Nykaa Profit and Return Insights Power BI dashboard" loading="lazy">
+          <p class="image-caption">This page focuses on profitability, profit margins, and product return performance to help identify areas for business improvement. It compares sales and profit across categories, examines return distribution, and highlights the main reasons for returns.
+          </p>
+        </article> -->
+        <!-- <article class="card dashboard-card">
+          <h3>03 — Customer & Regional Insights</h3>
+          <img src="assets/nykaa3.png" alt="Nykaa Customer and Regional Insights Power BI dashboard" loading="lazy">
+          <p class="image-caption">This page analyzes customer demographics and regional sales performance across cities, genders, and age groups. Interactive filters allow users to explore customer segments and understand variations in sales across locations.</p>
+        </article> -->
+      </div>
+    </section>
+
+    <section class="container" id="insights">
+      <div class="section-head"><h2>Key Business <span class="accent">Insights</span></h2><p>Findings reported from the analysis.</p></div>
+      <div class="grid insights">
+        <article class="card insight"><span class="bullet"></span><p><strong>YouTube</strong> showed the highest engagement and conversion performance among the analyzed platforms.</p></article>
+        <article class="card insight"><span class="bullet"></span><p><strong>Carousel and Image</strong> content types generated strong audience interaction.</p></article>
+        <article class="card insight"><span class="bullet"></span><p>Total campaign revenue reached approximately <strong>3.66M</strong>.</p></article>
+        <article class="card insight"><span class="bullet"></span><p>The campaigns generated approximately <strong>738K</strong> clicks.</p></article>
+        <article class="card insight"><span class="bullet"></span><p>Total followers reached approximately <strong>11M</strong>.</p></article>
+        <article class="card insight"><span class="bullet"></span><p>Regional analysis helps identify areas with stronger campaign and revenue performance.</p></article>
+        <article class="card insight"><span class="bullet"></span><p>Platform-wise conversion analysis helps evaluate the effectiveness of different social media channels.</p></article>
+        <article class="card insight"><span class="bullet"></span><p>Monthly trend analysis and interactive filters help users compare campaigns, regions, and content types to support marketing decisions.</p></article>
+      </div>
+    </section>
+
+    <section class="container">
+      <article class="card conclusion">
+        <h2>Business <span class="accent">Conclusion</span></h2>
+        <p class="muted">The Social Media Marketing Analysis Dashboard provides an overview of campaign revenue, audience interaction, conversion performance, and follower growth. YouTube showed strong engagement and conversion results, while Video and Carousel content generated strong audience interaction. Regional and monthly comparisons provide further visibility into campaign performance. Overall, the project demonstrates how Power BI can turn marketing data into actionable insights for informed decision-making.</p>
+      </article>
+    </section>
+
+    <section class="container" id="contact">
+      <div class="card">
+        <div class="section-head"><h2>About the <span class="accent">Author</span></h2><p>Archana — Data Analyst | Excel | SQL | Python | Power BI</p></div>
+        <p class="muted">Passionate about building interactive dashboards and transforming data into actionable insights.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/archana-ramesh-/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn ↗</a>
+          <a class="btn btn-secondary" href="https://github.com/archana501">Connect on Github ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Archana. Social Media Marketing Analysis Project.</span>
+      <a href="newindex.html#projects">Return to portfolio</a>
+    </div>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
